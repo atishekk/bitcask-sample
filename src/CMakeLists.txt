@@ -1,0 +1,1 @@
+add_library(bitcask-lib STATIC ${PROJECT_SOURCE_DIR}/src/engine_impl.cpp)
