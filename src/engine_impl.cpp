@@ -34,6 +34,26 @@ std::optional<Value> Engine::get(const Key &key) {
     return std::nullopt;
 }
 
-std::optional<Value> Engine::remove(const Key &Key) {
+std::optional<Value> Engine::remove(const Key &key) {
+    Operation curr_op = Operation::REMOVE;
+    std::string out = std::format("{},{}", OP::get_str(curr_op), key);
+
+    log_stream.seekg(0, std::ios::end);
+    log_stream << out << std::endl;
+    num_bytes += out.size() + 1;
+
+    auto pos = index.find(key);
+    if (pos.has_value()) {
+        std::size_t loc = pos.value();
+        log_stream.seekg(loc, std::ios::beg);
+
+        std::string line;
+        std::getline(log_stream, line);
+        auto [_, _key, _value] = deserialize_row(line);
+        if (_key != key)throw std::runtime_error("Internal error: keys don't match");
+
+        index.remove(_key);
+        return _value;
+    }
     return std::nullopt;
 }

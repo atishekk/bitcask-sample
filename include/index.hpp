@@ -58,6 +58,10 @@ public:
         if (it == _index.end()) return std::nullopt;
         return it->second;
     }
+
+    void remove(const Key &key) {
+        _index.erase(key);
+    }
 };
 
 #endif

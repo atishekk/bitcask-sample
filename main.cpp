@@ -11,5 +11,8 @@ int main(int argc, char const *argv[]) {
     Engine e{fs::path(argv[1])};
     e.set(entry("Hello", "world"));
     e.set(entry("Hello1", "world1"));
-    cout << e.get("Hello2").value_or("lol");
+    e.set(entry("Hello", "there"));
+    e.remove("Hello1");
+    cout << e.get("Hello1").value_or("lol") << endl;
+    cout << e.get("Hello").value();
 }
